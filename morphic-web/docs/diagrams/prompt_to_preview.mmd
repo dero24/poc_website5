@@ -1,0 +1,31 @@
+```mermaid
+sequenceDiagram
+    actor User
+    participant Prompt as Prompt Composer
+    participant Orchestrator as Generation Orchestrator
+    participant GroqBlueprint as Groq Blueprint Endpoint
+    participant GroqDelta as Groq Delta Endpoint
+    participant Validator as Auto-Repair Pipeline
+    participant Preview as Preview Runtime
+    participant Storage as Persistence Layer
+
+    User->>Prompt: Describe desired experience
+    Prompt->>Orchestrator: createGenerationRequest()
+    Orchestrator->>Storage: lookupCachedBlueprint(promptHash)
+    Storage-->>Orchestrator: cache hit?
+    alt cache miss
+        Orchestrator->>GroqBlueprint: POST /blueprint
+        GroqBlueprint-->>Orchestrator: blueprint JSON
+        Orchestrator->>Storage: saveBlueprint()
+    end
+    Orchestrator->>Validator: preValidate(blueprint)
+    Validator-->>Orchestrator: validationResult
+    Orchestrator->>GroqDelta: POST /delta
+    GroqDelta-->>Orchestrator: deltaCode
+    Orchestrator->>Validator: sanitizeAndRepair(deltaCode)
+    Validator-->>Orchestrator: sanitizedComponent
+    Orchestrator->>Preview: postMessage(loadComponent)
+    Preview-->>Orchestrator: renderStatus(success/fail)
+    Orchestrator->>Storage: persistGeneratedApp()
+    Orchestrator->>Prompt: update status + analytics
+```

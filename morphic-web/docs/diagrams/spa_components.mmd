@@ -1,0 +1,64 @@
+```mermaid
+flowchart LR
+    subgraph AppShell[AppShell / Layout]
+        Header[Header & Navigation]
+        Sections[Workspace Sections]
+    end
+
+    subgraph Prompt[Prompt Composer]
+        PromptForm[Prompt Form]
+        ModelPicker[Model Picker]
+        Guardrails[Guardrails Badge]
+        BlueprintStatus[Blueprint Status]
+    end
+
+    subgraph Engine[Generation Engine]
+        BlueprintAgent[Blueprint Agent]
+        TemplateMatcher[Template Matcher]
+        DeltaGenerator[Delta Generator]
+        AutoRepair[Auto-Repair Pipeline]
+    end
+
+    subgraph Preview[Preview Runtime Controller]
+        BabelCompiler[Babel Compiler]
+        Sanitizer[Sanitizer]
+        IframeBridge[Iframe Bridge]
+        CdnLoader[CDN Dependency Loader]
+    end
+
+    subgraph Persistence[Persistence Layer]
+        DexieRepo[Dexie Repository]
+        LocalFallback[LocalStorage Fallback]
+        ShareEncoder[Share Link Encoder]
+    end
+
+    subgraph Export[Export Pipeline]
+        StencilCompiler[Stencil Compiler]
+        WebComponentWrapper[Web Component Wrapper]
+        ZipBundler[Zip Bundler]
+        DesktopStubs[Desktop/Mobile Stubs]
+    end
+
+    subgraph Analytics[Analytics Module]
+        TimelineTracker[Timeline Tracker]
+        TokenMeter[Token Efficiency Meter]
+        TelemetryBatcher[Telemetry Batcher]
+    end
+
+    AppShell --> Prompt
+    AppShell --> Preview
+    AppShell --> Analytics
+
+    Prompt --> Engine
+    Engine --> Preview
+    Engine --> Persistence
+    Engine --> Analytics
+
+    Preview --> Persistence
+    Preview --> Export
+
+    Export --> Persistence
+    Export --> Analytics
+
+    Persistence --> Analytics
+```

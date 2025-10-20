@@ -1,0 +1,65 @@
+```mermaid
+erDiagram
+    USERPREFERENCES ||--o{ PROMPTBLUEPRINTS : "recent defaults"
+    PROMPTBLUEPRINTS ||--o{ GENERATEDAPPS : "produces"
+    GENERATEDAPPS ||--o{ ANALYTICSEVENTS : "records metrics"
+    GENERATEDAPPS ||--o{ EXPORTARTIFACTS : "bundles"
+    GENERATEDAPPS ||--o{ COLLABORATIONDRAFTS : "shares edits"
+    GENERATEDAPPS ||--o| SHARELINKMANIFESTS : "publishes link"
+
+    USERPREFERENCES {
+        string id PK
+        string defaultModel
+        boolean motionSafe
+        string themePreset
+        datetime updatedAt
+    }
+
+    PROMPTBLUEPRINTS {
+        string id PK
+        string promptHash
+        json blueprint
+        float confidenceScore
+        datetime createdAt
+    }
+
+    GENERATEDAPPS {
+        string id PK
+        string blueprintId FK
+        json deltaPrompt
+        json sanitizedCode
+        json runtimeManifest
+        datetime createdAt
+    }
+
+    ANALYTICSEVENTS {
+        string id PK
+        string appId FK
+        float generationMs
+        float tokenSavingsPercent
+        boolean autoRepairInvoked
+        datetime recordedAt
+    }
+
+    EXPORTARTIFACTS {
+        string id PK
+        string appId FK
+        binary zipBlob
+        string exportType
+        datetime exportedAt
+    }
+
+    COLLABORATIONDRAFTS {
+        string id PK
+        string appId FK
+        json sharedState
+        datetime updatedAt
+    }
+
+    SHARELINKMANIFESTS {
+        string id PK
+        string appId FK
+        string shareCode
+        datetime createdAt
+    }
+```
