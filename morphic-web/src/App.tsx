@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { PromptComposer } from './components/prompts/PromptComposer'
 import { PreviewController } from './components/preview/PreviewController'
 import { TimelinePanel } from './components/analytics/TimelinePanel'
+import { ExportPanel } from './components/export/ExportPanel'
 import { AppShell, GlassPanel, SectionBadge } from './components/layout/AppShell'
 import { ApiKeyModal } from './components/prompts/ApiKeyModal'
 import {
@@ -10,7 +11,6 @@ import {
   saveMorphicGroqKey,
   type MorphicStorageScope,
 } from './utils/keyStorage'
-import { exportManager } from './services/export/exportManager'
 import { useGenerationStore } from './stores/generationStore'
 
 function App() {
@@ -19,8 +19,7 @@ function App() {
     return readMorphicGroqKey()
   })
   const [modalOpen, setModalOpen] = useState(apiKeySnapshot.scope === 'none')
-  const { previewPayload, previewStatus } = useGenerationStore((state) => ({
-    previewPayload: state.previewPayload,
+  const { previewStatus } = useGenerationStore((state) => ({
     previewStatus: state.previewStatus,
   }))
 
@@ -34,14 +33,6 @@ function App() {
     setApiKeySnapshot(snapshot)
     setModalOpen(snapshot.scope === 'none')
     return savedScope
-  }
-
-  const handleExport = async () => {
-    try {
-      await exportManager.exportPreview(previewPayload, { fileName: 'morphic-preview' })
-    } catch (error) {
-      console.error('Export failed', error)
-    }
   }
 
   return (
@@ -101,18 +92,11 @@ function App() {
           accent="violet"
         >
           <SectionBadge>Preview Sphere</SectionBadge>
-          <div className="mt-6 flex h-[360px] flex-col gap-4">
+          <div className="mt-6 flex h-[360px] flex-col gap-4 rounded-3xl border border-violet-200/20 bg-gradient-to-br from-violet-500/20 via-transparent to-cyan-400/20 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
             <PreviewController />
-            <div className="flex items-center justify-between text-xs uppercase tracking-[0.24em] text-slate-300/70">
+            <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-xs uppercase tracking-[0.24em] text-slate-200/80">
               <span>{previewStatus.message ?? 'Awaiting preview render'}</span>
-              <button
-                type="button"
-                onClick={handleExport}
-                disabled={!previewPayload}
-                className="rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-xs font-semibold text-white transition hover:bg-white/10 disabled:cursor-not-allowed disabled:opacity-40"
-              >
-                Export preview
-              </button>
+              <span className="text-slate-300/70">State · {previewStatus.state}</span>
             </div>
           </div>
         </GlassPanel>
@@ -128,6 +112,16 @@ function App() {
           </div>
         </GlassPanel>
       </div>
+
+      <GlassPanel
+        title="Export, embed & showcase"
+        description="Turn your Morphic experience into a premium bundle ready for web embeds, desktop shells, or mobile wrappers."
+        accent="cyan"
+        className="mt-6"
+      >
+        <SectionBadge>Export Studio</SectionBadge>
+        <ExportPanel className="mt-6" />
+      </GlassPanel>
     </AppShell>
   )
 }

@@ -118,12 +118,7 @@
 
 ## 4. Iteration Plan
 
-- **Total Iterations Planned:** 4
-- **Iteration Dependencies:** Iteration 1 establishes core scaffolding and architecture artifacts. Iteration 2 builds foundational services, prompt templates, and validation. Iteration 3 implements export and analytics enhancements. Iteration 4 finalizes collaboration scaffolding, polish, and packaging.
-
----
-
-### Iteration 1: Foundation & Architecture Alignment
+## 1: Foundation & Architecture Alignment
 
 - **Iteration ID:** `I1`
 - **Goal:** Establish project scaffolding, core architectural artifacts, data models, and baseline UI shell with prompt onboarding.
@@ -273,26 +268,33 @@
 
 ---
 
-### Iteration 3: Export & Analytics Expansion
+### Iteration 3: Premium Experience, Analytics & Export
 
 - **Iteration ID:** `I3`
-- **Goal:** Deliver export pipeline (web component, desktop/mobile packaging), analytics dashboards, telemetry, and ADR documentation.
+- **Goal:** Transform Morphic Web into a premium, production-ready studio with elevated UI polish, actionable analytics, refined export flows, and documentation-driven workflows.
 - **Prerequisites:** `I2`
 - **Tasks:**
+  - **Task 3.0:**
+    - **Task ID:** `I3.T0`
+    - **Description:** Produce premium UI specification and interaction guidelines before coding. Document mood boards, layout wireframes, component states, and typography tokens.
+    - **Agent Type Hint:** `DesignSystemAgent`
+    - **Inputs:** Plan overview, Tailwind tokens, inspiration references.
+    - **Input Files:** `docs/design/`
+    - **Target Files:** `docs/design/ui_spec.md`, updated `docs/design/tailwind_tokens.md`
+    - **Deliverables:** UI spec describing layout grids, component states, animation principles.
+    - **Acceptance Criteria:** Spec approved by user; referenced in subsequent implementation tasks.
   - **Task 3.1:**
     - **Task ID:** `I3.T1`
-    - **Description:** Implement export manager handling Stencil compilation, react-to-webcomponent fallback, jszip bundling, and embed instructions.
+    - **Description:** Implement a production-grade export pipeline featuring Stencil compilation, react-to-webcomponent fallback, jszip bundling, and richly designed embed instructions that align with the premium UI aesthetic.
     - **Agent Type Hint:** `FrontendAgent`
     - **Inputs:** Export requirements, persistence layer, generated code interfaces.
-    - **Input Files:** `src/services/export/`, `src/components/export/`
+    - **Input Files:** `src/services/export/`, `src/components/export/`, design documents generated in I3.T0.
     - **Target Files:** `src/services/export/exportManager.ts`, `src/components/export/ExportPanel.tsx`
-    - **Deliverables:** Export pipeline functions, UI controls, tests for packaging functions.
-    - **Acceptance Criteria:** Tests generate mock web component, zip bundle; UI shows download/share options.
-    - **Dependencies:** `I2.T6`
-    - **Parallelizable:** No
+    - **Deliverables:** Export pipeline functions, couture-level export panel UI, tests for packaging functions.
+    - **Acceptance Criteria:** Tests generate mock web component and zip bundle; export panel mirrors design spec; UI supports copy-to-clipboard embed code.
   - **Task 3.2:**
     - **Task ID:** `I3.T2`
-    - **Description:** Write ADR detailing export architecture decisions (Stencil primary, fallback, packaging).
+    - **Description:** Write ADR detailing export architecture decisions (Stencil primary, fallback, packaging) and tie them to the premium UI/UX requirements introduced in `I3.T0`.
     - **Agent Type Hint:** `DocumentationAgent`
     - **Inputs:** Export manager design.
     - **Input Files:** `docs/adr/`
@@ -303,7 +305,7 @@
     - **Parallelizable:** Yes
   - **Task 3.3:**
     - **Task ID:** `I3.T3`
-    - **Description:** Create Mermaid diagram describing export pipeline from React component to web component and desktop/mobile packages.
+    - **Description:** Create Mermaid diagram describing export pipeline from React component to polished web component and desktop/mobile packages, referencing the UI spec artifacts.
     - **Agent Type Hint:** `DiagrammingAgent`
     - **Inputs:** Export requirements, ADR.
     - **Input Files:** `docs/diagrams/`
@@ -314,7 +316,7 @@
     - **Parallelizable:** Yes
   - **Task 3.4:**
     - **Task ID:** `I3.T4`
-    - **Description:** Implement analytics dashboard showing timeline metrics, token savings, success rates, with optional telemetry batcher.
+    - **Description:** Implement analytics dashboard showcasing timeline metrics, token savings, success rates, and visual storytelling components that match the premium design language.
     - **Agent Type Hint:** `FrontendAgent`
     - **Inputs:** Persistence layer, orchestrator events.
     - **Input Files:** `src/components/analytics/`, `src/services/analytics/`
@@ -325,13 +327,13 @@
     - **Parallelizable:** Yes
   - **Task 3.5:**
     - **Task ID:** `I3.T5`
-    - **Description:** Implement shareable preview links using LocalStorage hash references and share UI.
+    - **Description:** Implement shareable preview links with branded share panels, deep-link manifests, and import flows.
     - **Agent Type Hint:** `FrontendAgent`
     - **Inputs:** Persistence layer.
     - **Input Files:** `src/components/export/`
     - **Target Files:** `src/components/export/ShareLinkPanel.tsx`, `src/services/persistence/shareLinks.ts`
-    - **Deliverables:** Share link generator, import/export flows, tests for manifest reconstruction.
-    - **Acceptance Criteria:** Share link copy works; visiting link rebuilds preview; tests cover manifest serialization.
+    - **Deliverables:** Share link generator, luxury-grade share UI, import/export flows, tests for manifest reconstruction.
+    - **Acceptance Criteria:** Share link copy works; visiting link rebuilds preview; share UI matches `I3.T0` spec; tests cover manifest serialization.
     - **Dependencies:** `I2.T6`
     - **Parallelizable:** Yes
 
